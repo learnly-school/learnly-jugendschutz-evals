@@ -4,15 +4,40 @@
  * mehr ueber unsere Mischung aus als ueber das Modell. Begruendung in DENKSCHRIFT.md, Abschnitt 4.
  */
 
+import { cpus } from 'node:os';
+
 const anteil = (treffer, gesamt) => (gesamt === 0 ? null : treffer / gesamt);
 const prozent = (x) => (x === null ? '  –  ' : `${(x * 100).toFixed(1)}%`.padStart(6));
 
-/** Median statt Mittelwert: ein einzelner Ausreisser beim Modellstart soll die Zahl nicht kippen. */
-function median(xs) {
+function perzentil(xs, p) {
   const s = xs.filter((x) => typeof x === 'number').sort((a, b) => a - b);
   if (!s.length) return null;
-  const m = Math.floor(s.length / 2);
-  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  if (p === 0.5) {
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
+  return s[Math.min(s.length - 1, Math.floor(p * s.length))];
+}
+
+/** Median statt Mittelwert: ein einzelner Ausreisser beim Modellstart soll die Zahl nicht kippen. */
+const median = (xs) => perzentil(xs, 0.5);
+
+/**
+ * Zeitverteilung ueber ALLE Einzelanfragen, nicht ueber die Fall-Mittelwerte. Auf einer Maschine,
+ * auf der nebenher anderes laeuft, sagt der Median allein wenig; p90 und p99 zeigen, was im
+ * schlechtesten Fall gewartet wird. Zeiten sind NUR zwischen Laeufen am selben `ort` vergleichbar.
+ */
+function zeitverteilung(messungen) {
+  const alle = messungen.flatMap((m) => m.dauernMs ?? (typeof m.dauerMs === 'number' ? [m.dauerMs] : []));
+  if (!alle.length) return null;
+  return {
+    n: alle.length,
+    min: Math.round(perzentil(alle, 0)),
+    median: Math.round(median(alle)),
+    p90: Math.round(perzentil(alle, 0.9)),
+    p99: Math.round(perzentil(alle, 0.99)),
+    max: Math.round(Math.max(...alle)),
+  };
 }
 
 /**
@@ -99,6 +124,9 @@ export function auswerten(adapter, korpus, messungen, wiederholungen) {
     modell: adapter.name,
     bauweise: adapter.bauweise,
     anbieter: adapter.anbieter ?? 'selbst betrieben (Ollama)',
+    ort: adapter.ort ?? 'lokal',
+    maschine: `${process.platform}/${process.arch}, ${cpus()[0]?.model ?? 'unbekannt'}, ${cpus().length} Kerne`,
+    zeit: zeitverteilung(messungen),
     korpusVersion: korpus.version,
     wiederholungen,
     gemessenAm: new Date().toISOString(),
@@ -114,7 +142,10 @@ export function auswerten(adapter, korpus, messungen, wiederholungen) {
       ),
       medianMs: median(messungen.map((m) => m.dauerMs)),
       // Wie oft wiederholte Laeufe desselben Falls auseinandergingen, trotz Temperatur 0.
-      instabil: messungen.filter((m) => m.stabil === false).length,
+      // Nur Faelle mit mindestens zwei auswertbaren Antworten; sonst null (nicht beurteilbar).
+      instabil: messungen.some((m) => m.stabil !== null)
+        ? messungen.filter((m) => m.stabil === false).length
+        : null,
       unauswertbar: unauswertbar.length,
       ece: adapter.liefertWahrscheinlichkeit
         ? ece(korpus.faelle.map((c) => ({ p: fall(c)?.pBlock, ist: c.blockieren })))
@@ -145,11 +176,30 @@ export function tabelle(berichte) {
     ['Durchlassquote harmlos', ...berichte.map((b) => prozent(b.kennzahlen.durchlassquoteHarmlos))],
     ['davon Fallen', ...berichte.map((b) => prozent(b.kennzahlen.durchlassquoteFallen))],
     ['Kategorie-Treffer', ...berichte.map((b) => prozent(b.kennzahlen.kategorieTreffer))],
-    ['Median ms', ...berichte.map((b) => (b.kennzahlen.medianMs ?? 0).toFixed(0).padStart(6))],
+    // Zeiten stehen bewusst GETRENNT (siehe geschwindigkeit()): ein Rechenzentrum gegen einen
+    // Mac mini zu stellen misst das Rechenzentrum, nicht das Modell.
     ['Kalibrierung (ECE)', ...berichte.map((b) => (b.kennzahlen.ece === null ? 'n. messbar' : b.kennzahlen.ece.toFixed(3)))],
-    ['instabile Faelle', ...berichte.map((b) => String(b.kennzahlen.instabil).padStart(6))],
+    ['instabile Faelle', ...berichte.map((b) => (b.kennzahlen.instabil === null ? ' n.b. ' : String(b.kennzahlen.instabil).padStart(6)))],
     ['unauswertbar', ...berichte.map((b) => String(b.kennzahlen.unauswertbar).padStart(6))],
   ];
   const breite = Math.max(...zeilen.map((z) => z[0].length));
   return zeilen.map((z) => `| ${z[0].padEnd(breite)} | ${z.slice(1).join(' | ')} |`).join('\n');
+}
+
+/**
+ * Zeiten getrennt von der Qualitaet, und nach Ort gruppiert. Eine gehostete API gegen ein Modell
+ * auf dem eigenen Rechner antreten zu lassen misst Rechenzentrum und Internetleitung, nicht das
+ * Modell. Vergleichbar sind nur Zeilen mit demselben `ort`.
+ */
+export function geschwindigkeit(berichte) {
+  const zeilen = ['| Modell | Ort | Median | p90 | p99 | max | Anfragen |', '| --- | --- | ---: | ---: | ---: | ---: | ---: |'];
+  for (const b of [...berichte].sort((a, b2) => String(a.ort).localeCompare(String(b2.ort)))) {
+    const z = b.zeit;
+    zeilen.push(
+      z
+        ? `| ${b.modell} | ${b.ort} | ${z.median} ms | ${z.p90} ms | ${z.p99} ms | ${z.max} ms | ${z.n} |`
+        : `| ${b.modell} | ${b.ort} | – | – | – | – | – |`,
+    );
+  }
+  return zeilen.join('\n');
 }

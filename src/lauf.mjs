@@ -25,6 +25,9 @@ const MODELLE = {
     ollamaAdapter({
       basis: process.env.OLLAMA_BASE_URL ?? 'http://127.0.0.1:11434/v1',
       modell: process.env.OLLAMA_MODELL ?? 'gemma3:latest',
+      // Zeigt OLLAMA_BASE_URL auf einen Tunnel, ist die Zeit NICHT mit lokalen Laeufen
+      // vergleichbar; dann OLLAMA_ORT setzen, damit das im Bericht steht.
+      ort: process.env.OLLAMA_ORT ?? 'lokal',
     }),
   jeff08: () =>
     entscheidungsAdapter({
@@ -101,10 +104,16 @@ async function messe(adapter, fall, wiederholungen) {
     id: fall.id,
     // Mehrheitsentscheid ueber die Wiederholungen; bei Gleichstand gilt die sichere Seite.
     blockiert: gueltig.length === 0 ? null : blockaden * 2 >= gueltig.length,
-    stabil: gueltig.length > 0 && (blockaden === 0 || blockaden === gueltig.length),
+    // null = nicht beurteilbar (keine auswertbare Antwort, oder nur eine Wiederholung). Ohne diese
+    // Unterscheidung zaehlte ein unauswertbarer Fall zusaetzlich als "instabil" und stuende in der
+    // Tabelle zweimal.
+    stabil: gueltig.length < 2 ? null : blockaden === 0 || blockaden === gueltig.length,
     kategorie: gueltig.find((l) => l.blockiert)?.kategorie ?? null,
     pBlock: gueltig.length ? mittel(gueltig.map((l) => l.pBlock).filter((p) => p !== null && p !== undefined)) : null,
     dauerMs: gueltig.length ? mittel(gueltig.map((l) => l.dauerMs)) : null,
+    // JEDE Einzelmessung, nicht nur ihr Mittel: auf einer Maschine, auf der nebenher etwas
+    // anderes laeuft, ist die Streuung genauso ein Ergebnis wie der Median.
+    dauernMs: laeufe.map((l) => l.dauerMs).filter((d) => typeof d === 'number' && d > 0),
     fehler: gueltig.length === 0 ? laeufe[0].fehler : null,
     rohtext: laeufe[0].rohtext ?? null,
   };
@@ -143,6 +152,7 @@ async function main() {
     process.stderr.write('\n');
 
     const bericht = auswerten(adapter, KORPUS, messungen, wiederholungen);
+    bericht.umgebung = adapter.umgebung ? await adapter.umgebung() : null;
     berichte.push(bericht);
     const datei = new URL(`ergebnisse/${s}.json`, WURZEL);
     writeFileSync(datei, JSON.stringify(bericht, null, 2) + '\n');

@@ -18,7 +18,7 @@ const VORLAGE = JSON.parse(
 
 export const SCHWELLE_STANDARD = 0.5;
 
-export function batterieAdapter({ name, url, modell, schluessel = null, anbieter, schwelle = SCHWELLE_STANDARD }) {
+export function batterieAdapter({ name, url, modell, schluessel = null, anbieter, ort = 'lokal', schwelle = SCHWELLE_STANDARD }) {
   const { zustandsschluessel, rahmen, fragen, schwere } = VORLAGE;
 
   const anfrageFragen = Object.fromEntries([
@@ -30,6 +30,7 @@ export function batterieAdapter({ name, url, modell, schluessel = null, anbieter
     name,
     bauweise: 'entscheidung (Batterie)',
     liefertWahrscheinlichkeit: true,
+    ort,
     anbieter,
     schwelle,
 

@@ -10,7 +10,7 @@
  */
 
 import { readdirSync, readFileSync } from 'node:fs';
-import { tabelle } from './auswertung.mjs';
+import { tabelle, geschwindigkeit } from './auswertung.mjs';
 
 const WURZEL = new URL('..', import.meta.url);
 const KORPUS = JSON.parse(readFileSync(new URL('korpus/korpus.json', WURZEL), 'utf8'));
@@ -25,8 +25,15 @@ if (!berichte.length) {
   process.exit(1);
 }
 
-console.log(`\n## Vergleich\n\nKorpus ${KORPUS.version}, ${KORPUS.faelle.length} Faelle\n`);
+console.log(`\n## Qualitaet\n\nKorpus ${KORPUS.version}, ${KORPUS.faelle.length} Faelle\n`);
 console.log(tabelle(berichte));
+
+console.log('\n## Geschwindigkeit\n');
+console.log(geschwindigkeit(berichte));
+console.log(
+  '\nNur Zeilen mit demselben Ort sind vergleichbar. Eine gehostete API gegen ein Modell auf dem\n' +
+    'eigenen Rechner zu stellen misst Rechenzentrum und Leitung, nicht das Modell.',
+);
 
 console.log('\n## Herkunft\n');
 console.log('| Modell | Bauweise | Betrieb |');

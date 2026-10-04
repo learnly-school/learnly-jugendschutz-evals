@@ -14,7 +14,7 @@ const VORLAGE = JSON.parse(
   readFileSync(new URL('../../prompts/waechter-entscheidung.json', import.meta.url), 'utf8'),
 );
 
-export function entscheidungsAdapter({ name, url, modell, schluessel = null, anbieter }) {
+export function entscheidungsAdapter({ name, url, modell, schluessel = null, anbieter, ort = 'lokal' }) {
   const { zustandsschluessel, frage } = VORLAGE;
 
   return {
@@ -22,6 +22,7 @@ export function entscheidungsAdapter({ name, url, modell, schluessel = null, anb
     bauweise: 'entscheidung',
     liefertWahrscheinlichkeit: true,
     anbieter,
+    ort,
 
     async entscheide(nachricht) {
       const kopf = { 'content-type': 'application/json' };

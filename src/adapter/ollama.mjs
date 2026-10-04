@@ -23,11 +23,28 @@ function urteilAusText(text) {
   }
 }
 
-export function ollamaAdapter({ basis, modell }) {
+export function ollamaAdapter({ basis, modell, ort = 'lokal' }) {
   return {
     name: `ollama:${modell}`,
     bauweise: 'generativ',
     liefertWahrscheinlichkeit: false,
+    ort,
+
+    /**
+     * Version des Inferenz-Servers. Gehoert in jeden Bericht: Dasselbe Modell mit demselben Digest
+     * verhaelt sich unter verschiedenen Ollama-Versionen nachweislich unterschiedlich (gemessen:
+     * zwei Krisenfaelle kippen zwischen 0.30.10 und 0.32.1). Ohne diese Angabe ist ein Lauf nicht
+     * reproduzierbar.
+     */
+    async umgebung() {
+      try {
+        const r = await fetch(`${basis.replace(/\/v1\/?$/, '')}/api/version`);
+        const j = await r.json();
+        return { server: `ollama ${j.version ?? 'unbekannt'}` };
+      } catch {
+        return { server: 'ollama (Version nicht abfragbar)' };
+      }
+    },
 
     async entscheide(nachricht) {
       const start = performance.now();
