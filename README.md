@@ -1,4 +1,4 @@
-# waechter-bench
+# jugendschutz-evals
 
 **Ein offener Prüfstand für Jugendschutz-Wächter in deutschsprachigen Schul-Chats.**
 
@@ -106,7 +106,7 @@ Haus kommt und was davon geprüft wurde, steht in [`SICHERHEITSPRUEFUNG.md`](SIC
 
 | Datei | Inhalt |
 | --- | --- |
-| [`DENKSCHRIFT.md`](DENKSCHRIFT.md) | wie der Benchmark entworfen ist, **vor** den Zahlen |
+| [`DENKSCHRIFT.md`](DENKSCHRIFT.md) | wie diese Evals entworfen sind, **vor** den Zahlen |
 | [`SICHERHEITSPRUEFUNG.md`](SICHERHEITSPRUEFUNG.md) | Prüfung der fremden Software, bevor sie lief |
 | [`BETRIEB.md`](BETRIEB.md) | wie man die Modelle hochbekommt |
 | [`korpus/korpus.json`](korpus/korpus.json) | die 140 Fälle |

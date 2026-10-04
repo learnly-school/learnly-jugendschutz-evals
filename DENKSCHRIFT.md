@@ -1,4 +1,4 @@
-# Denkschrift: wie dieser Benchmark entworfen ist
+# Denkschrift: wie diese Evals entworfen sind
 
 Dieses Dokument hält die Entscheidungen fest, bevor Zahlen da sind. Wer später eine Zahl anzweifelt,
 soll hier nachlesen können, was gemessen werden sollte und warum — und nicht erst aus dem Ergebnis
@@ -62,7 +62,7 @@ Jev bleibt trotzdem im Vergleich — **als Messlatte, nicht als Kandidat**. Man 
 Genauigkeit die Selbstbetreibbarkeit kostet. Wenn der Abstand klein ist, ist die Entscheidung leicht.
 Wenn er groß ist, muss man das aushalten und benennen.
 
-Dass der Benchmark gegen eine gehostete API laufen darf, liegt allein daran, dass **das Korpus
+Dass die Messung gegen eine gehostete API laufen darf, liegt allein daran, dass **das Korpus
 vollständig synthetisch ist** (siehe §6). Es verlassen keine Schülerdaten das Haus. Mit echten Daten
 wäre dieser Lauf nicht zulässig.
 
@@ -118,8 +118,8 @@ selbst. In der Ergebnistabelle steht dort „nicht messbar", nicht „0".
 ## 6. Das Korpus
 
 Das bestehende learnly-Korpus hat **13 Fälle**. Als Stolperdraht im CI ist das richtig dimensioniert:
-Es soll merken, wenn ein Prompt-Umbau den Wächter kaputt macht. Als Benchmark, über den man öffentlich
-etwas behauptet, ist es **zu klein** — bei 13 Fällen ist ein einziger Ausrutscher acht Prozentpunkte.
+Es soll merken, wenn ein Prompt-Umbau den Wächter kaputt macht. Als Grundlage für eine öffentliche
+Aussage ist es **zu klein** — bei 13 Fällen ist ein einziger Ausrutscher acht Prozentpunkte.
 
 Deshalb ein eigenes, größeres Korpus. Die Entwurfsregeln:
 
@@ -151,16 +151,22 @@ einem echten Datenbestand. Das ist nicht nur Datenschutz, sondern Voraussetzung 
 überhaupt veröffentlichen und gegen eine fremde API schicken zu dürfen.
 
 **f) Die Erwartung ist begründet.** Jeder Fall trägt ein Feld, das sagt, *warum* die erwartete Antwort
-die richtige ist. Wo wir selbst schwanken, steht das dabei. Ein Benchmark, dessen Goldstandard nicht
-begründet ist, misst die Laune seines Autors.
+die richtige ist. Wo wir selbst schwanken, steht das dabei. Eine Messung, deren Goldstandard nicht
+begründet ist, misst die Laune ihres Autors.
 
-## 7. Was dieser Benchmark nicht kann
+## 7. Was diese Evals nicht können
 
 Damit niemand mehr hineinliest, als drinsteht:
 
 - **Ein Autor.** Die Fälle und ihre erwarteten Antworten stammen aus einer Hand. Kein zweites,
   unabhängiges Urteil, keine Übereinstimmungsquote zwischen mehreren Bewertenden. Wo ein Fall
   strittig ist, ist das vermerkt, aber das ersetzt keine zweite Meinung.
+
+  **Deshalb heißt das hier „Evals" und nicht „Benchmark".** Ein Benchmark beansprucht, der Maßstab
+  zu sein, an dem sich fremde Modelle messen lassen; diesen Anspruch trägt ein Goldstandard aus
+  einer Hand nicht. Evals sind das, was man gegen das eigene System fährt, offengelegt und
+  widerlegbar. Das ist hier die ehrliche Beschreibung — und es verschiebt auch die Frage: nicht
+  „wer gewinnt", sondern „ist unser Schutz gut genug".
 - **Erfundene Sprache.** Wir ahmen nach, wie Kinder schreiben. Ob wir das gut treffen, ist selbst eine
   Annahme.
 - **Ein Prompt je Bauweise.** Ein besserer Prompt für Gemma oder bessere Optionstexte für Jeff könnten
@@ -183,4 +189,4 @@ Der zweite ist Nutzen. Für deutschsprachigen Kinderschutz in Schul-Chats gibt e
 keinen offenen Prüfstand. Wer so etwas baut, fängt bei null an. Das muss nicht sein.
 
 Und ein unangenehmer dritter Grund, der dazugehört: Wenn der Ist-Zustand schlecht abschneidet, steht
-das hier auch. Ein Benchmark, den sein Betreiber nur veröffentlicht, wenn er gewinnt, ist Werbung.
+das hier auch. Eine Messung, die ihr Betreiber nur veröffentlicht, wenn er gewinnt, ist Werbung.

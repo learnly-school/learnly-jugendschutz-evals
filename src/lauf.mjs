@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Waechter-Benchmark: ein Korpus, mehrere Modelle, dieselben Fragen.
+ * Jugendschutz-Evals: ein Korpus, mehrere Modelle, dieselben Fragen.
  *
  *   node src/lauf.mjs --modell gemma
  *   node src/lauf.mjs --modell jeff08 --wiederholungen 3

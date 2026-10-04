@@ -1,6 +1,6 @@
 # Sicherheitsprüfung der verwendeten Fremdsoftware
 
-Für diesen Benchmark wird fremder Code ausgeführt und fremde Modellgewichte geladen. Beides wurde
+Für diese Evals wird fremder Code ausgeführt und fremde Modellgewichte geladen. Beides wurde
 vor der ersten Ausführung geprüft. Dieses Dokument hält fest, **was** geprüft wurde, **womit** und
 **was dabei herauskam** — damit die Prüfung nachvollziehbar und wiederholbar ist und nicht als
 „haben wir mal kurz angeschaut" durchgeht.
@@ -128,7 +128,7 @@ Vollständigkeit ist hier nicht zu haben, und so zu tun wäre schlimmer als die 
 
 ## 8. Ergebnis
 
-Für den Zweck dieses Benchmarks — ein lokal laufender Entscheidungsdienst auf einer
+Für den Zweck dieser Evals — ein lokal laufender Entscheidungsdienst auf einer
 Entwicklermaschine, der synthetische Testsätze einordnet — ist die Installation **vertretbar**. Die
 beiden Eigenschaften, auf die es ankommt, sind erfüllt: **der Serve-Pfad kann nicht nach Hause
 telefonieren, und die Gewichte können beim Laden keinen Code ausführen.**

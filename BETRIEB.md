@@ -68,11 +68,20 @@ Beide Server können nebeneinander laufen.
 
 ## Jev, gehostet
 
-Jev gibt es nur als API von TypeSafe AI. Ein Schlüssel kommt aus der TypeSafe-Konsole.
+Jev gibt es nur als API von TypeSafe AI.
+
+1. **Schlüssel anlegen:** https://console.typesafe.ai/keys
+2. **Vorher ohne Code ausprobieren:** https://console.typesafe.ai/playground — dort eine Nachricht
+   als `state` einfügen und eine Frage dazu stellen.
 
 ```bash
-JEV_API_KEY=… node src/lauf.mjs --modell jev
+JEV_API_KEY=… node src/lauf.mjs --modell jev       # als Auswahlfrage
+JEV_API_KEY=… node src/lauf.mjs --modell jevb      # als Gefahren-Batterie
 ```
+
+Endpunkt ist `POST https://api.typesafe.ai/v1/systemone` mit `Authorization: Bearer <key>`; der
+Adapter setzt das selbst. Abweichendes Modell über `JEV_MODELL` (Standard `jev-latest`, zeigt
+derzeit auf `jev-1.13.0`).
 
 Kosten sind vernachlässigbar: abgerechnet werden nur Eingabe-Token zu 42 US-Dollar je Milliarde.
 Ein vollständiger Lauf über alle 140 Fälle mit drei Wiederholungen liegt bei rund 170 000 Token,

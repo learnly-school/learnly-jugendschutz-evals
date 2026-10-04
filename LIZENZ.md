@@ -13,7 +13,7 @@ Namensnennung etwa so:
 
 > Wächter-Korpus, HAUS HOPPE - ITS (learnly.school), CC BY 4.0
 
-Wer das Korpus erweitert oder Bewertungen ändert, möge das kenntlich machen. Ein Benchmark, dessen
+Wer das Korpus erweitert oder Bewertungen ändert, möge das kenntlich machen. Ein Korpus, dessen
 Fassungen man nicht auseinanderhalten kann, ist wertlos.
 
 ## Prüfstand-Code: MIT

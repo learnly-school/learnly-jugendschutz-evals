@@ -299,15 +299,21 @@ sollte zeigen können, **wie gut** er ist, nicht nur, dass es ihn gibt. Der zwei
 deutschsprachigen Kinderschutz in Schul-Chats gab es keinen offenen Prüfstand. Wer so etwas baut,
 fing bisher bei null an.
 
-Und ein dritter, unbequemer: Ein Benchmark, den sein Betreiber nur veröffentlicht, wenn er gewinnt,
-ist Werbung. Dieser hier hat unseren eigenen Wächter beim Versagen erwischt. Genau deshalb steht er
+Und ein dritter, unbequemer: Eine Messung, die ihr Betreiber nur veröffentlicht, wenn er gewinnt,
+ist Werbung. Diese hier hat unseren eigenen Wächter beim Versagen erwischt. Genau deshalb steht sie
 offen.
 
 **Die Grenzen stehen dazu.** Ein Autor, erfundene Sprache, eine Frage je Bauweise, nur
 Einzelnachrichten ohne Gesprächsverlauf. Das Korpus ist ein Werkzeug, kein Urteil. Wer einen Fall
 für falsch bewertet hält, möge widersprechen — dafür ist es veröffentlicht.
 
+Übrigens heißt das Repository bewusst „Evals" und nicht „Benchmark". Ein Benchmark beansprucht, der
+Maßstab zu sein, an dem sich fremde Modelle messen lassen. Diesen Anspruch trägt ein Goldstandard
+aus einer Hand nicht — und er verschöbe auch die Frage: nicht „wer gewinnt", sondern „ist unser
+Schutz gut genug". Das zweite ist die Frage, die eine Schule interessiert.
+
 ---
 
-*Korpus, Prüfstand und Rohdaten: [waechter-bench](https://github.com/learnly-school/waechter-bench).
-Korpus und Dokumentation unter CC BY 4.0, der Code unter MIT.*
+*Korpus, Prüfstand und Rohdaten:
+[jugendschutz-evals](https://github.com/learnly-school/jugendschutz-evals). Korpus und
+Dokumentation unter CC BY 4.0, der Code unter MIT.*
