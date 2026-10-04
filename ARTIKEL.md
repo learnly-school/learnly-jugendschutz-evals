@@ -129,10 +129,11 @@ Jeff 0,8B, jede Zeile *Gefahren erkannt / davon Krisen / Harmloses durchgelassen
 | 0,70 | 45,5 % / 35,3 % / 85,7 % | 3,9 % / 0,0 % / 92,1 % |
 | 0,90 | 15,6 % / 5,9 % / 96,8 % | 0,0 % / 0,0 % / 100,0 % |
 
-Gemmas einziger Betriebspunkt — 59,7 % / 47,1 % / **93,7 %** — liegt **über beiden Kurven**. Um
-Gemmas Durchlassquote zu erreichen, muss die Schwelle zwischen 0,80 und 0,90 liegen. Dort erkennt
-das Entscheidungsmodell noch 15 bis 26 Prozent der Gefahren statt 59,7 — und bei der
-Batterie-Variante keinen einzigen Krisenfall mehr.
+Gemmas einziger Betriebspunkt lautet 59,7 % / 47,1 % / **93,7 %**. Auf keiner der beiden Kurven
+gibt es eine Schwelle, die ihn auf beiden Achsen zugleich schlägt. Dreht man die Schwelle herunter,
+erkennt Jeff mehr Gefahren als Gemma — blockiert dann aber zwei von drei harmlosen Nachrichten.
+Dreht man sie hoch genug, um Gemmas Durchlassquote zu erreichen, bleiben 15 bis 26 Prozent der
+Gefahren übrig. Dazwischen liegt kein Punkt, der beides besser macht.
 
 Das ist die allgemeinste Lehre dieses Projekts, und sie gilt weit über Kinderschutz hinaus:
 

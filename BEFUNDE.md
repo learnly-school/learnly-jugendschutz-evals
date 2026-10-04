@@ -54,7 +54,13 @@ Jeff 0,8B, beide Frageformen (`node src/vergleich.mjs --kurve` für die vollen K
 
 Zum Vergleich der eine Punkt, den Gemma anbietet: **59,7 % / 47,1 % / 93,7 %**.
 
-> **Gemmas einzelner Betriebspunkt liegt über BEIDEN Kurven.**
+> **Auf keiner der beiden Kurven gibt es eine Schwelle, die Gemma auf beiden Achsen zugleich
+> schlägt.**
+
+Genauer, damit das nicht mehr behauptet als es soll: Bei niedriger Schwelle erkennt Jeff *mehr*
+Gefahren als Gemma (0,20: 93,5 %), blockiert dann aber zwei von drei harmlosen Nachrichten. Bei
+hoher Schwelle lässt es Harmloses durch wie Gemma, erkennt dann aber kaum noch Gefahren. Dazwischen
+liegt kein Punkt, der beides besser macht.
 
 Die Auswahlfrage trennt erkennbar besser als die Batterie — nützt aber nichts: Um Gemmas
 Durchlassquote von 93,7 % zu erreichen, muss die Schwelle zwischen 0,80 und 0,90 liegen, und dort
