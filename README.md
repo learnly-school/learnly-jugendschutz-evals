@@ -1,4 +1,4 @@
-# jugendschutz-evals
+# learnly-jugendschutz-evals
 
 **Ein offener Prüfstand für Jugendschutz-Wächter in deutschsprachigen Schul-Chats.**
 

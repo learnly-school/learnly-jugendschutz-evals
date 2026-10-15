@@ -315,5 +315,5 @@ Schutz gut genug". Das zweite ist die Frage, die eine Schule interessiert.
 ---
 
 *Korpus, Prüfstand und Rohdaten:
-[jugendschutz-evals](https://github.com/learnly-school/jugendschutz-evals). Korpus und
+[learnly-jugendschutz-evals](https://github.com/learnly-school/learnly-jugendschutz-evals). Korpus und
 Dokumentation unter CC BY 4.0, der Code unter MIT.*
